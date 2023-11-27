@@ -10,7 +10,7 @@ export const toyService = {
     save
 }
 
-function query(filterBy = {} , sortBy={}) {
+function query(filterBy = {}, sortBy = {}) {
     let toysToDisplay = toys.slice()
     if (filterBy.name) {
         const regExp = new RegExp(filterBy.name, 'i')
@@ -20,29 +20,28 @@ function query(filterBy = {} , sortBy={}) {
     if (filterBy.price) {
         toysToDisplay = toysToDisplay.filter(toy => toy.price <= filterBy.price)
     }
-           
-            if (filterBy.inStock !== 'all') {
-                toysToDisplay = toysToDisplay.filter(t => t.inStock && filterBy.inStock === 'inStock'
-                || !t.inStock && filterBy.inStock === 'notInStock')
-            }
-    
-            if(filterBy.labels.length !== 0){
-                toysToDisplay = toysToDisplay.filter(t => {
-                    return filterBy.labels.every(l =>{
-                       return t.labels.includes(l)
-                    })
-                })
-            }
-    
-            if (sortBy.type) {
-                if(sortBy.type === 'name'){
-                    toysToDisplay.sort(((t1, t2) => t1.name.localeCompare(t2.name) * sortBy.desc))
-                }else{
-                    console.log('sortBy.type',sortBy.type)
-                    toysToDisplay.sort(((t1, t2) => (t1[sortBy.type] - t2[sortBy.type]) * sortBy.desc))
-                }
-            } 
 
+    if (filterBy.inStock && filterBy.inStock !== 'all') {
+        toysToDisplay = toysToDisplay.filter(t => t.inStock && filterBy.inStock === 'inStock'
+            || !t.inStock && filterBy.inStock === 'notInStock')
+    }
+
+    if (filterBy.labels.length !== 0) {
+        toysToDisplay = toysToDisplay.filter(t => {
+            return filterBy.labels.every(l => {
+                return t.labels.includes(l)
+            })
+        })
+    }
+
+    if (sortBy.type) {
+        if (sortBy.type === 'name') {
+            toysToDisplay.sort(((t1, t2) => t1.name.localeCompare(t2.name) * sortBy.desc))
+        } else {
+            console.log('sortBy.type', sortBy.type)
+            toysToDisplay.sort(((t1, t2) => (t1[sortBy.type] - t2[sortBy.type]) * sortBy.desc))
+        }
+    }
     return Promise.resolve(toysToDisplay)
 }
 
@@ -104,6 +103,6 @@ function _saveToysToFile() {
     })
 }
 
-function getMsg(){
+function getMsg() {
     return 'abcdefggg'
 }

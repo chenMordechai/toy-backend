@@ -33,10 +33,10 @@ app.use(express.json()) // for req.body
 // **************** Toys API ****************:
 // List
 app.get('/api/toy', (req, res) => {
-    const { name, price , inStock,labels ,type ,desc} = req.query
-    const filterBy = {name, price: +price , inStock , labels:(labels)?labels:[] }
-    const sortBy = {type , desc: +desc }
-    toyService.query(filterBy,sortBy)
+    const { name, price, inStock, labels, type, desc } = req.query
+    const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
+    const sortBy = { type, desc: +desc }
+    toyService.query(filterBy, sortBy)
         .then(toys => {
             res.send(toys)
         })
@@ -50,11 +50,11 @@ app.get('/api/toy', (req, res) => {
 app.post('/api/toy', (req, res) => {
     // const loggedinUser = userService.validateToken(req.cookies.loginToken)
     // if (!loggedinUser) return res.status(401).send('Cannot add toy')
-    const { name, price,labels, inStock } = req.body
-    console.log(name, price,labels, inStock )
+    const { name, price, labels, inStock } = req.body
+    console.log(name, price, labels, inStock)
 
     const toy = {
-        name, 
+        name,
         price: +price,
         labels,
         inStock
@@ -75,11 +75,11 @@ app.put('/api/toy', (req, res) => {
     // const loggedinUser = userService.validateToken(req.cookies.loginToken)
     // if (!loggedinUser) return res.status(401).send('Cannot update toy')
 
-    const { name, price,labels, inStock , _id } = req.body
-    console.log(name, price,labels, inStock )
+    const { name, price, labels, inStock, _id } = req.body
+    console.log(name, price, labels, inStock)
 
     const toy = {
-        name, 
+        name,
         price: +price,
         labels,
         inStock,

@@ -5,43 +5,37 @@
         "_id": "WjthL",
         "labels": [
             "Doll",
-            "Baby"
-        ],
-        "createdAt": 1631031801011,
-        "inStock": true
-    },
-    {
-        "name": "Talking Robot",
-        "price": 137,
-        "_id": "Wjt3L",
-        "labels": [
             "Battery Powered",
             "Baby"
         ],
         "createdAt": 1631031801011,
-        "inStock": true
+        "inStock": true,
+        "imgId": 2
+    },
+    {
+        "name": "Talking Robot",
+        "price": 137,
+        "_id": "WjtrL",
+        "labels": [
+            "Doll",
+            "Battery Powered",
+            "Baby"
+        ],
+        "createdAt": 1631031801011,
+        "inStock": true,
+        "imgId": 3
     },
     {
         "name": "Robot",
         "price": 137,
-        "_id": "WjwhL",
+        "_id": "Wj3hL",
         "labels": [
             "Doll",
-            "Battery Powered"
+            "Battery Powered",
+            "Baby"
         ],
         "createdAt": 1631031801011,
-        "inStock": true
-    },
-    {
-        "name": "aaa",
-        "price": 2002,
-        "labels": [
-            "On wheels",
-            "Box game",
-            "Art"
-        ],
         "inStock": true,
-        "_id": "eP3XC",
-        "msg": "abcdefggg"
+        "imgId": 5
     }
 ]
