@@ -5,10 +5,12 @@ import { dbService } from '../../services/db.service.js'
 import { logger } from '../../services/logger.service.js'
 import { utilService } from '../../services/util.service.js'
 
-async function query(filterBy = { txt: '' }) {
+async function query(filterBy = { name: '', price: 0 }, sortBy = {}) {
+    console.log('filterBy:', filterBy)
     try {
         const criteria = {
-            vendor: { $regex: filterBy.txt, $options: 'i' }
+            name: { $regex: filterBy.name, $options: 'i' },
+            price: { $gt: filterBy.price }
         }
         const collection = await dbService.getCollection('toy')
         var toys = await collection.find(criteria).toArray()
