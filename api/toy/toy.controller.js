@@ -3,14 +3,15 @@ import { logger } from '../../services/logger.service.js'
 
 export async function getToys(req, res) {
     try {
-        const { name, price, inStock, labels, type, desc } = req.query
-        const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
-        const sortBy = { type, desc: +desc }
+        // const { name, price, inStock, labels, type, desc } = req.query
+        // const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
+        // const sortBy = { type, desc: +desc }
         // const filterBy = {
         //     txt: req.query.txt || '',
         // }
-        logger.debug('Getting Toys', filterBy, sortBy)
-        const toys = await toyService.query(filterBy, sortBy)
+        // logger.debug('Getting Toys', filterBy, sortBy)
+        // const toys = await toyService.query(filterBy, sortBy)
+        const toys = await toyService.query()
         res.json(toys)
     } catch (err) {
         logger.error('Failed to get toys', err)

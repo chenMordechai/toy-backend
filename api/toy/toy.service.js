@@ -5,15 +5,40 @@ import { dbService } from '../../services/db.service.js'
 import { logger } from '../../services/logger.service.js'
 import { utilService } from '../../services/util.service.js'
 
-async function query(filterBy = { name: '', price: 0 }, sortBy = {}) {
-    console.log('filterBy:', filterBy)
+export const toyService = {
+    remove,
+    query,
+    getById,
+    add,
+    update,
+    addToyMsg,
+    removeToyMsg
+}
+
+async function query(filterBy = {}, sortBy = {}) {
     try {
-        const criteria = {
-            name: { $regex: filterBy.name, $options: 'i' },
-            price: { $gt: filterBy.price }
+        let criteria = {}
+        if (filterBy.name) {
+            criteria.name = { $regex: filterBy.name, $options: 'i' }
+        }
+        if (filterBy.price) {
+            criteria.price = { $lt: filterBy.price }
+        }
+        if (filterBy.inStock && filterBy.inStock !== 'all') {
+            criteria.inStock = filterBy.inStock
+        }
+        if (filterBy.labels && filterBy.labels.length !== 0) {
+            criteria.labels = { $all: [...filterBy.labels] }
+        }
+        let sort = {}
+        if (sortBy.type) {
+            sort = {
+                [sortBy.type]: sortBy.desc
+            }
         }
         const collection = await dbService.getCollection('toy')
-        var toys = await collection.find(criteria).toArray()
+        var toys = await collection.find(criteria, { sort }).toArray()
+        console.log('toys:', toys)
         return toys
     } catch (err) {
         logger.error('cannot find toys', err)
@@ -91,12 +116,3 @@ async function removeToyMsg(toyId, msgId) {
     }
 }
 
-export const toyService = {
-    remove,
-    query,
-    getById,
-    add,
-    update,
-    addToyMsg,
-    removeToyMsg
-}
