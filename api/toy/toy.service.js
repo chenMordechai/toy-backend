@@ -38,7 +38,6 @@ async function query(filterBy = {}, sortBy = {}) {
         }
         const collection = await dbService.getCollection('toy')
         var toys = await collection.find(criteria, { sort }).toArray()
-        console.log('toys:', toys)
         return toys
     } catch (err) {
         logger.error('cannot find toys', err)
@@ -49,20 +48,10 @@ async function query(filterBy = {}, sortBy = {}) {
 async function getById(toyId) {
     try {
         const collection = await dbService.getCollection('toy')
-        const toy = collection.findOne({ _id: ObjectId(toyId) })
+        const toy = await collection.findOne({ _id: new ObjectId(toyId) })
         return toy
     } catch (err) {
         logger.error(`while finding toy ${toyId}`, err)
-        throw err
-    }
-}
-
-async function remove(toyId) {
-    try {
-        const collection = await dbService.getCollection('toy')
-        await collection.deleteOne({ _id: ObjectId(toyId) })
-    } catch (err) {
-        logger.error(`cannot remove toy ${toyId}`, err)
         throw err
     }
 }
@@ -80,18 +69,30 @@ async function add(toy) {
 
 async function update(toy) {
     try {
-        const toyToSave = {
-            vendor: toy.vendor,
-            price: toy.price
-        }
+        const { name, price, inStock, labels } = toy
+        const toyToSave = { name, price, inStock, labels }
+
         const collection = await dbService.getCollection('toy')
-        await collection.updateOne({ _id: ObjectId(toy._id) }, { $set: toyToSave })
+        await collection.updateOne({ _id: new ObjectId(toy._id) }, { $set: toyToSave })
         return toy
     } catch (err) {
         logger.error(`cannot update toy ${toyId}`, err)
         throw err
     }
 }
+
+async function remove(toyId) {
+    try {
+        const collection = await dbService.getCollection('toy')
+        await collection.deleteOne({ _id: new ObjectId(toyId) })
+    } catch (err) {
+        logger.error(`cannot remove toy ${toyId}`, err)
+        throw err
+    }
+}
+
+
+
 
 async function addToyMsg(toyId, msg) {
     try {

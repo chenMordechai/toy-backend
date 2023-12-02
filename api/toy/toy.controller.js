@@ -3,15 +3,12 @@ import { logger } from '../../services/logger.service.js'
 
 export async function getToys(req, res) {
     try {
-        // const { name, price, inStock, labels, type, desc } = req.query
-        // const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
-        // const sortBy = { type, desc: +desc }
-        // const filterBy = {
-        //     txt: req.query.txt || '',
-        // }
-        // logger.debug('Getting Toys', filterBy, sortBy)
-        // const toys = await toyService.query(filterBy, sortBy)
-        const toys = await toyService.query()
+        const { name, price, inStock, labels, type, desc } = req.query
+        const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
+        const sortBy = { type, desc: +desc }
+
+        logger.debug('Getting Toys', filterBy, sortBy)
+        const toys = await toyService.query(filterBy, sortBy)
         res.json(toys)
     } catch (err) {
         logger.error('Failed to get toys', err)
@@ -31,11 +28,13 @@ export async function getToyById(req, res) {
 }
 
 export async function addToy(req, res) {
-    const { loggedinUser } = req
+    // const { loggedinUser } = req
+    console.log('addToy')
 
     try {
         const toy = req.body
-        toy.owner = loggedinUser
+        console.log('toy:', toy)
+        // toy.owner = loggedinUser
         const addedToy = await toyService.add(toy)
         res.json(addedToy)
     } catch (err) {
@@ -45,6 +44,7 @@ export async function addToy(req, res) {
 }
 
 export async function updateToy(req, res) {
+    console.log('updateToy')
     try {
         const toy = req.body
         const updatedToy = await toyService.update(toy)
@@ -56,6 +56,7 @@ export async function updateToy(req, res) {
 }
 
 export async function removeToy(req, res) {
+    console.log('removeToy')
     try {
         const toyId = req.params.id
         await toyService.remove(toyId)
