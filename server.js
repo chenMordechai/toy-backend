@@ -52,6 +52,7 @@ app.get('/**', (req, res) => {
 })
 
 const port = process.env.PORT || 3030
+console.log('port:', port)
 
 app.listen(port, () => {
     logger.info(`Server listening on port http://127.0.0.1:${port}/`)
