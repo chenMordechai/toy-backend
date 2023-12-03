@@ -28,12 +28,12 @@ export async function getToyById(req, res) {
 }
 
 export async function addToy(req, res) {
-    // const { loggedinUser } = req
+    const { loggedinUser } = req
     console.log('addToy')
+    if (!loggedinUser.isAdmin) return
 
     try {
         const toy = req.body
-        console.log('toy:', toy)
         // toy.owner = loggedinUser
         const addedToy = await toyService.add(toy)
         res.json(addedToy)
