@@ -19,6 +19,7 @@ app.use(express.static('public'))
 
 
 if (process.env.NODE_ENV === 'production') {
+    console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
     // Express serve static files on production environment
     app.use(express.static(path.resolve(__dirname, 'public')))
     console.log('__dirname: ', __dirname)
