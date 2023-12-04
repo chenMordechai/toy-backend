@@ -28,7 +28,10 @@ async function query(filterBy = {}, sortBy = {}) {
             criteria.inStock = filterBy.inStock
         }
         if (filterBy.labels && filterBy.labels.length !== 0) {
+            // $all - if every labels found
             criteria.labels = { $all: [...filterBy.labels] }
+            // $in - if some of the labels found
+            // criteria.labels = { $in: [...filterBy.labels] }
         }
         let sort = {}
         if (sortBy.type) {
@@ -37,7 +40,8 @@ async function query(filterBy = {}, sortBy = {}) {
             }
         }
         const collection = await dbService.getCollection('toy')
-        var toys = await collection.find(criteria, { sort }).toArray()
+        // var toys = await collection.find(criteria, { sort }).toArray()
+        var toys = await collection.find(criteria).sort(sort).toArray()
         return toys
     } catch (err) {
         logger.error('cannot find toys', err)

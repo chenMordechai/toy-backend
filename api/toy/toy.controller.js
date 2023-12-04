@@ -69,11 +69,12 @@ export async function removeToy(req, res) {
 
 export async function addToyMsg(req, res) {
     const { loggedinUser } = req
+    const {_id , fullname} = loggedinUser
     try {
         const toyId = req.params.id
         const msg = {
             txt: req.body.txt,
-            by: loggedinUser,
+            by: {_id,fullname},
         }
         const savedMsg = await toyService.addToyMsg(toyId, msg)
         res.json(savedMsg)

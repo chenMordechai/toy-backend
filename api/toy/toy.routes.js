@@ -6,17 +6,16 @@ import { getToys, getToyById, addToy, updateToy, removeToy, addToyMsg, removeToy
 export const toyRoutes = express.Router()
 
 // middleware that is specific to this router
-// router.use(requireAuth)
 
 toyRoutes.get('/', log, getToys)
 toyRoutes.get('/:id', getToyById)
 // toyRoutes.post('/', addToy)
-toyRoutes.post('/', requireAuth, requireAdmin, addToy)
+toyRoutes.post('/', requireAdmin, addToy)
 // toyRoutes.put('/:id', updateToy)
-toyRoutes.put('/:id', requireAuth, requireAdmin, updateToy)
+toyRoutes.put('/:id', requireAdmin, updateToy)
 // toyRoutes.delete('/:id', removeToy)
 // toyRoutes.delete('/:id', requireAuth, removeToy)
-toyRoutes.delete('/:id', requireAuth, requireAdmin, removeToy)
+toyRoutes.delete('/:id', requireAdmin, removeToy)
 
 toyRoutes.post('/:id/msg', requireAuth, addToyMsg)
 toyRoutes.delete('/:id/msg/:msgId', requireAuth, removeToyMsg)
