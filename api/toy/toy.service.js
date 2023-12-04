@@ -10,30 +10,15 @@ export const toyService = {
     query,
     getById,
     add,
-    update,
+    update, 
     addToyMsg,
     removeToyMsg
 }
 
 async function query(filterBy = {}, sortBy = {}) {
     try {
-        let criteria = {}
-        if (filterBy.name) {
-            criteria.name = { $regex: filterBy.name, $options: 'i' }
-        }
-        if (filterBy.price) {
-            criteria.price = { $lt: filterBy.price }
-        }
-        if (filterBy.inStock && filterBy.inStock !== 'all') {
-            criteria.inStock = filterBy.inStock
-        }
-        if (filterBy.labels && filterBy.labels.length !== 0) {
-            // $all - if every labels found
-            criteria.labels = { $all: [...filterBy.labels] }
-            // $in - if some of the labels found
-            // criteria.labels = { $in: [...filterBy.labels] }
-        }
-        let sort = {}
+        const criteria = _buildCriteria(filterBy)
+        const sort = {}
         if (sortBy.type) {
             sort = {
                 [sortBy.type]: sortBy.desc
@@ -41,12 +26,40 @@ async function query(filterBy = {}, sortBy = {}) {
         }
         const collection = await dbService.getCollection('toy')
         // var toys = await collection.find(criteria, { sort }).toArray()
-        var toys = await collection.find(criteria).sort(sort).toArray()
+        var toyCursor = await collection.find(criteria).sort(sort)
+        
+        // paiging
+        // if(filterBy.pageIndex !== undefined){
+        //     toyCursor.skip(filterBy.pageIdx *PAGE_SIZE).limit(PAGE_SIZE)
+        // }
+    
+        const toys =  toyCursor.toArray()
         return toys
     } catch (err) {
         logger.error('cannot find toys', err)
         throw err
     }
+}
+
+function _buildCriteria(filterBy){
+    const criteria = {}
+    if (filterBy.name) {
+        criteria.name = { $regex: filterBy.name, $options: 'i' }
+    }
+    if (filterBy.price) {
+        criteria.price = { $lt: filterBy.price }
+    }
+    if ( filterBy.inStock !== 'all') {
+        criteria.inStock = (filterBy.inStock === 'inStock')?true:false
+    }
+    if (filterBy.labels && filterBy.labels.length !== 0) {
+        // $all - if every labels found
+        criteria.labels = { $all: [...filterBy.labels] }
+        // $in - if some of the labels found
+        // criteria.labels = { $in: [...filterBy.labels] }
+    }
+    return criteria
+
 }
 
 async function getById(toyId) {

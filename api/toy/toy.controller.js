@@ -4,7 +4,7 @@ import { logger } from '../../services/logger.service.js'
 export async function getToys(req, res) {
     try {
         const { name, price, inStock, labels, type, desc } = req.query
-        const filterBy = { name, price: +price, inStock, labels: (labels) ? labels : [] }
+        const filterBy = { name, price: +price, inStock , labels: (labels) ? labels : [] }
         const sortBy = { type, desc: +desc }
 
         logger.debug('Getting Toys', filterBy, sortBy)
@@ -30,6 +30,7 @@ export async function getToyById(req, res) {
 export async function addToy(req, res) {
     const { loggedinUser } = req
     console.log('addToy')
+    console.log('loggedinUser:', loggedinUser)
     if (!loggedinUser.isAdmin) return
 
     try {
