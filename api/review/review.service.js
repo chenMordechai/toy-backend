@@ -122,6 +122,7 @@ async function getById(reviewId) {
             delete review.aboutToyId
             return review
         })
+        console.log('reviews[0]:', reviews[0])
         return reviews[0]
     } catch (err) {
         logger.error(`while finding toy ${reviewId}`, err)
@@ -137,6 +138,7 @@ async function add(review) {
             aboutToyId:new ObjectId(review.aboutToyId),
             txt: review.txt
         }
+        console.log('reviewToAdd:', reviewToAdd)
         const collection = await dbService.getCollection('review')
         await collection.insertOne(reviewToAdd)
         return reviewToAdd
