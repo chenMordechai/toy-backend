@@ -3,8 +3,8 @@ import { logger } from '../../services/logger.service.js'
 
 export async function getReviews(req, res) {
     try {
-        // const { name, price, inStock, labels, type, desc } = req.query
-        const filterBy = { }
+        const { txt, aboutToyId, byUserId } = req.query
+        const filterBy = { txt , aboutToyId , byUserId }
         const sortBy = { }
 
         logger.debug('Getting Reviews', filterBy, sortBy)
@@ -17,9 +17,10 @@ export async function getReviews(req, res) {
 }
 
 export async function addReview(req, res) {
-    // const { loggedinUser } = req
+    const { loggedinUser } = req
     try {
         const review = req.body // txt,aboutToyId
+        // review.byUserId = '656c29766b05f4baadc8ca9d'
         review.byUserId = loggedinUser._id
         const addedReview = await reviewService.add(review)
 

@@ -69,9 +69,15 @@ async function query(filterBy = {}, sortBy = {}) {
 
 function _buildCriteria(filterBy){
     const criteria = {}
-    // if (filterBy.name) {
-    //     criteria.name = { $regex: filterBy.name, $options: 'i' }
-    // }
+    if (filterBy.txt) {
+        criteria.txt = { $regex: filterBy.txt, $options: 'i' }
+    }
+    if (filterBy.aboutToyId) {
+        criteria.aboutToyId = new ObjectId(filterBy.aboutToyId) 
+    }
+    if (filterBy.byUserId) {
+        criteria.byUserId = new ObjectId(filterBy.byUserId) 
+    }
     return criteria
 }
 
@@ -81,8 +87,6 @@ async function add(review) {
         const reviewToAdd ={
             byUserId: new ObjectId(review.byUserId),
             aboutToyId:new ObjectId(review.aboutToyId),
-            // byUserId,
-            // aboutToyId,
             txt: review.txt
         }
         const collection = await dbService.getCollection('review')
