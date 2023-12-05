@@ -9,6 +9,7 @@ export const reviewService = {
     remove,
     query,
     add,
+    getById
 }
 
 async function query(filterBy = {}, sortBy = {}) {
@@ -79,6 +80,53 @@ function _buildCriteria(filterBy){
         criteria.byUserId = new ObjectId(filterBy.byUserId) 
     }
     return criteria
+}
+async function getById(reviewId) {
+    try {
+        const collection = await dbService.getCollection('review')
+        // const review = await collection.findOne({ _id: new ObjectId(reviewId) })
+        // return review
+        var reviews = await collection.aggregate([
+            {
+                $match: {_id : new ObjectId(reviewId)}
+            },
+            {
+                $lookup:
+                {
+                    localField: 'byUserId',
+                    from: 'user',
+                    foreignField: '_id',
+                    as: 'byUser'
+                }
+            },
+            {
+                $unwind: '$byUser'
+            },
+            {
+                $lookup:
+                {
+                    localField: 'aboutToyId',
+                    from: 'toy',
+                    foreignField: '_id',
+                    as: 'aboutToy'
+                }
+            },
+            {
+                $unwind: '$aboutToy'
+            }
+        ]).toArray()
+        reviews = reviews.map(review => {
+            review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
+            review.aboutToy = { _id: review.aboutToy._id,name: review.aboutToy.name , imgId: review.aboutToy.imgId }
+            delete review.byUserId
+            delete review.aboutToyId
+            return review
+        })
+        return reviews[0]
+    } catch (err) {
+        logger.error(`while finding toy ${reviewId}`, err)
+        throw err
+    }
 }
 
 

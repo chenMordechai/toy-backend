@@ -59,5 +59,17 @@ export async function removeReview(req, res) {
     }
 }
 
+export async function getReviewById(req, res) {
+    try {
+        const reviewId = req.params.id
+        console.log('reviewId:', reviewId)
+        const review = await reviewService.getById(reviewId)
+        res.json(review)
+    } catch (err) {
+        logger.error('Failed to get review', err)
+        res.status(500).send({ err: 'Failed to get review' })
+    }
+}
+
 
 
