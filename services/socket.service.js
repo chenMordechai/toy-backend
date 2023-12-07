@@ -3,6 +3,19 @@ import { Server } from 'socket.io'
 
 var gIo = null
 
+export const socketService = {
+    // set up the sockets service and define the API
+    setupSocketAPI,
+    // emit to everyone / everyone in a specific room (label)
+    emitTo,
+    // emit to a specific user (if currently active in system)
+    emitToUser,
+    // Send to all sockets BUT not the current socket - if found
+    // (otherwise broadcast to a room / to all)
+    broadcast,
+}
+
+
 export function setupSocketAPI(http) {
     gIo = new Server(http, {
         cors: {
@@ -24,12 +37,12 @@ export function setupSocketAPI(http) {
             socket.myTopic = topic
         })
         socket.on('chat-send-msg', msg => {
-            console.log('msg',msg)
             logger.info(`New chat msg from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`)
             // emits to all sockets:
             // gIo.emit('chat-add-msg', msg)
             // emits only to sockets in the same room
-            gIo.to(socket.myTopic).emit('chat-add-msg', msg)
+            // gIo.to(socket.myTopic).emit('chat-add-msg', msg)
+            broadcast({type:'chat-add-msg', data:msg,room: socket.myTopic })
         })
         socket.on('user-watch', userId => {
             logger.info(`user-watch from socket [id: ${socket.id}], on user ${userId}`)
@@ -37,10 +50,8 @@ export function setupSocketAPI(http) {
 
         })
         socket.on('chat-is-typing',user =>{
-            console.log(user.fullname)
+            // emits only to xockets in the same room except the user
             broadcast({ type: 'chat-show-typing', data: user.fullname,room:socket.myTopic, userId: user._id })
-
-            
         })
         
 
@@ -78,12 +89,10 @@ async function emitToUser({ type, data, userId }) {
 
 // If possible, send to all sockets BUT not the current socket 
 // Optionally, broadcast to a room / to all
-async function broadcast({ type, data, room = null, userId }) {
-    console.log('userId:', userId)
+async function broadcast({ type, data, room = null, userId ='' }) {
     userId = userId.toString()
     logger.info(`Broadcasting event: ${type}`)
     const excludedSocket = await _getUserSocket(userId)
-    console.log('excludedSocket:', excludedSocket)
     if (room && excludedSocket) {
         logger.info(`Broadcast to room ${room} excluding user: ${userId}`)
         excludedSocket.broadcast.to(room).emit(type, data)
@@ -91,6 +100,7 @@ async function broadcast({ type, data, room = null, userId }) {
         logger.info(`Broadcast to all excluding user: ${userId}`)
         excludedSocket.broadcast.emit(type, data)
     } else if (room) {
+
         logger.info(`Emit to room: ${room}`)
         gIo.to(room).emit(type, data)
     } else {
@@ -120,14 +130,3 @@ function _printSocket(socket) {
     console.log(`Socket - socketId: ${socket.id} userId: ${socket.userId}`)
 }
 
-export const socketService = {
-    // set up the sockets service and define the API
-    setupSocketAPI,
-    // emit to everyone / everyone in a specific room (label)
-    emitTo,
-    // emit to a specific user (if currently active in system)
-    emitToUser,
-    // Send to all sockets BUT not the current socket - if found
-    // (otherwise broadcast to a room / to all)
-    broadcast,
-}
