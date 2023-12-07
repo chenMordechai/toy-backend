@@ -3,6 +3,7 @@ import { authService } from '../api/auth/auth.service.js'
 
 export async function requireAuth(req, res, next) {
     if (!req?.cookies?.loginToken) {
+        console.log('requireAuth:')
         return res.status(401).send('Not Authenticated')
     }
     

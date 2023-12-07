@@ -48,7 +48,6 @@ export async function addReview(req, res) {
 }
 
 export async function removeReview(req, res) {
-    console.log('removeReview')
     try {
         const reviewId = req.params.id
         await reviewService.remove(reviewId)

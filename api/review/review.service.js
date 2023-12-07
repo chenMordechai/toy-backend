@@ -55,7 +55,7 @@ async function query(filterBy = {}, sortBy = {}) {
         ]).toArray()
         reviews = reviews.map(review => {
             review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
-            review.aboutToy = { _id: review.aboutToy._id,name: review.aboutToy.name , imgId: review.aboutToy.imgId }
+            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgId: review.aboutToy.imgId }
             delete review.byUserId
             delete review.aboutToyId
             return review
@@ -68,27 +68,29 @@ async function query(filterBy = {}, sortBy = {}) {
     }
 }
 
-function _buildCriteria(filterBy){
+function _buildCriteria(filterBy) {
     const criteria = {}
     if (filterBy.txt) {
         criteria.txt = { $regex: filterBy.txt, $options: 'i' }
     }
     if (filterBy.aboutToyId) {
-        criteria.aboutToyId = new ObjectId(filterBy.aboutToyId) 
+        criteria.aboutToyId = new ObjectId(filterBy.aboutToyId)
     }
     if (filterBy.byUserId) {
-        criteria.byUserId = new ObjectId(filterBy.byUserId) 
+        criteria.byUserId = new ObjectId(filterBy.byUserId)
     }
     return criteria
 }
 async function getById(reviewId) {
+    console.log('getById', reviewId)
     try {
         const collection = await dbService.getCollection('review')
-        // const review = await collection.findOne({ _id: new ObjectId(reviewId) })
+        const review = await collection.findOne({ _id: new ObjectId(reviewId) })
         // return review
+        console.log('review:', review)
         var reviews = await collection.aggregate([
             {
-                $match: {_id : new ObjectId(reviewId)}
+                $match: { _id: new ObjectId(reviewId) }
             },
             {
                 $lookup:
@@ -115,9 +117,10 @@ async function getById(reviewId) {
                 $unwind: '$aboutToy'
             }
         ]).toArray()
+        console.log('reviews:', reviews)
         reviews = reviews.map(review => {
             review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
-            review.aboutToy = { _id: review.aboutToy._id,name: review.aboutToy.name , imgId: review.aboutToy.imgId }
+            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgId: review.aboutToy.imgId }
             delete review.byUserId
             delete review.aboutToyId
             return review
@@ -133,12 +136,11 @@ async function getById(reviewId) {
 
 async function add(review) {
     try {
-        const reviewToAdd ={
+        const reviewToAdd = {
             byUserId: new ObjectId(review.byUserId),
-            aboutToyId:new ObjectId(review.aboutToyId),
+            aboutToyId: new ObjectId(review.aboutToyId),
             txt: review.txt
         }
-        console.log('reviewToAdd:', reviewToAdd)
         const collection = await dbService.getCollection('review')
         await collection.insertOne(reviewToAdd)
         return reviewToAdd

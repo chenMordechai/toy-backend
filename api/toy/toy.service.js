@@ -10,7 +10,7 @@ export const toyService = {
     query,
     getById,
     add,
-    update, 
+    update,
     addToyMsg,
     removeToyMsg
 }
@@ -25,15 +25,16 @@ async function query(filterBy = {}, sortBy = {}) {
             }
         }
         const collection = await dbService.getCollection('toy')
+        console.log('collection:', collection)
         // var toys = await collection.find(criteria, { sort }).toArray()
         var toyCursor = await collection.find(criteria).sort(sort)
-        
+
         // paiging
         // if(filterBy.pageIndex !== undefined){
         //     toyCursor.skip(filterBy.pageIdx *PAGE_SIZE).limit(PAGE_SIZE)
         // }
-    
-        const toys =  toyCursor.toArray()
+
+        const toys = toyCursor.toArray()
         return toys
     } catch (err) {
         logger.error('cannot find toys', err)
@@ -41,7 +42,7 @@ async function query(filterBy = {}, sortBy = {}) {
     }
 }
 
-function _buildCriteria(filterBy){
+function _buildCriteria(filterBy) {
     const criteria = {}
     if (filterBy.name) {
         criteria.name = { $regex: filterBy.name, $options: 'i' }
@@ -49,8 +50,8 @@ function _buildCriteria(filterBy){
     if (filterBy.price) {
         criteria.price = { $lt: filterBy.price }
     }
-    if ( filterBy.inStock !== 'all') {
-        criteria.inStock = (filterBy.inStock === 'inStock')?true:false
+    if (filterBy.inStock !== 'all') {
+        criteria.inStock = (filterBy.inStock === 'inStock') ? true : false
     }
     if (filterBy.labels && filterBy.labels.length !== 0) {
         // $all - if every labels found
@@ -126,7 +127,7 @@ async function addToyMsg(toyId, msg) {
 async function removeToyMsg(toyId, msgId) {
     try {
         const collection = await dbService.getCollection('toy')
-        await collection.updateOne({ _id: ObjectId(toyId) }, { $pull: { msgs: { id: msgId } } })
+        await collection.updateOne({ _id:new ObjectId(toyId) }, { $pull: { msgs: { id: msgId } } })
         return msgId
     } catch (err) {
         logger.error(`cannot add toy msg ${toyId}`, err)
