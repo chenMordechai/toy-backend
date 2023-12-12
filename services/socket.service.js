@@ -1,5 +1,6 @@
 import { logger } from './logger.service.js'
 import { Server } from 'socket.io'
+import { toyService } from '../api/toy/toy.service.js'
 
 var gIo = null
 
@@ -22,18 +23,22 @@ export function setupSocketAPI(http) {
             origin: '*',
         }
     })
+    // default event
     gIo.on('connection', socket => {
         logger.info(`New connected socket [id: ${socket.id}]`)
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
+        // Join socket to a room
         socket.on('chat-set-topic', topic => {
             if (socket.myTopic === topic) return
             if (socket.myTopic) {
+                // When visiting another toy, remove the prev "room"
                 socket.leave(socket.myTopic)
                 logger.info(`Socket is leaving topic ${socket.myTopic} [id: ${socket.id}]`)
             }
             socket.join(topic)
+            // Save the toyId on this specific user socket for later use
             socket.myTopic = topic
         })
         socket.on('chat-send-msg', msg => {
@@ -41,17 +46,25 @@ export function setupSocketAPI(http) {
             // emits to all sockets:
             // gIo.emit('chat-add-msg', msg)
             // emits only to sockets in the same room
-            // gIo.to(socket.myTopic).emit('chat-add-msg', msg)
-            broadcast({type:'chat-add-msg', data:msg,room: socket.myTopic })
-        })
-        socket.on('user-watch', userId => {
-            logger.info(`user-watch from socket [id: ${socket.id}], on user ${userId}`)
-            socket.join('watching:' + userId)
+            toyService.addMsgToChat(msg, socket.myTopic)
 
+            broadcast({type:'chat-add-msg', data:msg,room: socket.myTopic })
+            // gIo.to(socket.myTopic).emit('chat-add-msg', msg)
         })
-        socket.on('chat-is-typing',user =>{
+      
+        socket.on('chat-user-typing',user =>{
+            logger.info(`User is typing from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`)
             // emits only to xockets in the same room except the user
-            broadcast({ type: 'chat-show-typing', data: user.fullname,room:socket.myTopic, userId: user._id })
+            broadcast({ type: 'chat-add-typing', data: user.fullname,room:socket.myTopic, userId: user._id })
+            // socket.broadcast.to(socket.myTopic).emit('chat-add-typing', user)
+        })
+        socket.on('chat-stop-typing',user =>{
+            logger.info(`User has stopped typing from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`)
+
+            // emits only to xockets in the same room except the user
+            broadcast({ type: 'chat-remove-typing', data: user.fullname,room:socket.myTopic, userId: user._id })
+            // socket.broadcast.to(socket.myTopic).emit('chat-remove-typing', user)
+
         })
         
 

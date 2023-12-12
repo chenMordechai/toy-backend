@@ -12,20 +12,23 @@ export const toyService = {
     add,
     update,
     addToyMsg,
-    removeToyMsg
+    removeToyMsg,
+    addMsgToChat
 }
 
 async function query(filterBy = {}, sortBy = {}) {
+    console.log('query', sortBy)
     try {
         const criteria = _buildCriteria(filterBy)
-        const sort = {}
+        let sort = {}
         if (sortBy.type) {
             sort = {
                 [sortBy.type]: sortBy.desc
             }
+            console.log('sort:', sort)
         }
         const collection = await dbService.getCollection('toy')
-        console.log('collection:', collection)
+        console.log('collection:')
         // var toys = await collection.find(criteria, { sort }).toArray()
         var toyCursor = await collection.find(criteria).sort(sort)
 
@@ -132,6 +135,18 @@ async function removeToyMsg(toyId, msgId) {
     } catch (err) {
         logger.error(`cannot add toy msg ${toyId}`, err)
         throw err
+    }
+}
+
+async function addMsgToChat(msg, toyId) {
+    try {
+        console.log('toyId', toyId);
+        const collection = await dbService.getCollection('toy')
+        await collection.updateOne({ _id: new ObjectId(toyId) }, { $push: { chatHistory: msg } })
+        console.log('addMsgToChat')
+    } catch (err) {
+        console.log(`ERROR: cannot add message to toy`)
+        throw err;
     }
 }
 
