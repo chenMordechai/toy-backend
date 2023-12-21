@@ -55,7 +55,7 @@ async function query(filterBy = {}, sortBy = {}) {
         ]).toArray()
         reviews = reviews.map(review => {
             review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
-            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgId: review.aboutToy.imgId }
+            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgUrl: review.aboutToy.imgUrl }
             delete review.byUserId
             delete review.aboutToyId
             return review
@@ -120,7 +120,7 @@ async function getById(reviewId) {
         console.log('reviews:', reviews)
         reviews = reviews.map(review => {
             review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
-            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgId: review.aboutToy.imgId }
+            review.aboutToy = { _id: review.aboutToy._id, name: review.aboutToy.name, imgUrl: review.aboutToy.imgUrl }
             delete review.byUserId
             delete review.aboutToyId
             return review

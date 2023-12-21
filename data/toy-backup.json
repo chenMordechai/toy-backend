@@ -8,7 +8,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 11,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148617/11_dshrlo.png",
         "msgs": []
     },
     {
@@ -20,7 +20,7 @@
             "Art"
         ],
         "inStock": true,
-        "imgId": 12,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148617/12_p8cum6.png",
         "msgs": []
     },
     {
@@ -31,7 +31,7 @@
             "Baby"
         ],
         "inStock": false,
-        "imgId": 4,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148613/4_qglt1u.png",
         "msgs": []
     },
     {
@@ -43,7 +43,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 8,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148615/8_mahx4y.png",
         "msgs": []
     },
     {
@@ -55,7 +55,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 13,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148619/17_c516os.jpg",
         "msgs": []
     },
     {
@@ -68,7 +68,7 @@
             "On wheels"
         ],
         "inStock": false,
-        "imgId": 7,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148615/9_lon8a0.png",
         "msgs": []
     },
     {
@@ -81,19 +81,7 @@
             "Art"
         ],
         "inStock": true,
-        "imgId": 14,
-        "msgs": []
-    },
-    {
-        "name": "xxx",
-        "price": 67,
-        "labels": [
-            "Puzzle",
-            "Battery Powered",
-            "Baby"
-        ],
-        "inStock": true,
-        "imgId": 8,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148618/14_ty3sjs.png",
         "msgs": []
     },
     {
@@ -106,7 +94,7 @@
             "On wheels"
         ],
         "inStock": false,
-        "imgId": 15,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148618/15_o2amtx.png",
         "msgs": []
     },
     {
@@ -117,7 +105,7 @@
             "Outdoor"
         ],
         "inStock": true,
-        "imgId": 2,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148613/2_hfqzxm.png",
         "msgs": []
     },
     {
@@ -129,7 +117,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 26,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148610/26_znptxz.png",
         "msgs": []
     },
     {
@@ -141,7 +129,7 @@
             "Art"
         ],
         "inStock": true,
-        "imgId": 24,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148611/24_oygdno.png",
         "msgs": []
     },
     {
@@ -149,10 +137,11 @@
         "price": 147,
         "labels": [
             "Art",
-            "Baby"
+            "Baby",
+            "Puzzle"
         ],
         "inStock": false,
-        "imgId": 23,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148610/23_bmuy0z.png",
         "msgs": []
     },
     {
@@ -161,10 +150,11 @@
         "labels": [
             "Doll",
             "Battery Powered",
-            "Baby"
+            "Baby",
+            "Puzzle"
         ],
         "inStock": true,
-        "imgId": 25,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148611/25_m7el7n.png",
         "msgs": []
     },
     {
@@ -176,7 +166,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 27,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148615/27_ynhaxj.png",
         "msgs": []
     },
     {
@@ -189,7 +179,7 @@
             "On wheels"
         ],
         "inStock": false,
-        "imgId": 28,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148611/28_ntl0nw.png",
         "msgs": []
     },
     {
@@ -202,7 +192,7 @@
             "Art"
         ],
         "inStock": true,
-        "imgId": 20,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148620/20_cqc8jr.png",
         "msgs": []
     },
     {
@@ -214,7 +204,7 @@
             "Baby"
         ],
         "inStock": true,
-        "imgId": 21,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148621/21_pxpmai.png",
         "msgs": []
     },
     {
@@ -227,7 +217,7 @@
             "On wheels"
         ],
         "inStock": false,
-        "imgId": 22,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148622/22_tnhey5.png",
         "msgs": []
     },
     {
@@ -238,7 +228,7 @@
             "Outdoor"
         ],
         "inStock": true,
-        "imgId": 19,
+        "imgUrl": "https://res.cloudinary.com/dnluclrao/image/upload/v1703148623/19_cuuw03.png",
         "msgs": []
     }
 ]
